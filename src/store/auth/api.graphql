@@ -1,0 +1,8 @@
+mutation login {
+    makeToken {
+        id: token
+        token
+        expiration
+        expiration_date
+    }
+}

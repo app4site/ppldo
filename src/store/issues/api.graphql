@@ -1,0 +1,22 @@
+query loadInitial {
+    issues(last: 10) {
+        edges {
+            node {
+                id
+                ...on Issue {
+                    title
+                    messages(last: 1) {
+                        edges {
+                            node {
+                                id
+                                ...on RegularMessage {
+                                    message
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

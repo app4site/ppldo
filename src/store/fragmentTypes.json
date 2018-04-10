@@ -1,0 +1,1 @@
+{"__schema":{"types":[{"kind":"INTERFACE","name":"IMessage","possibleTypes":[{"name":"RegularMessage"},{"name":"NotificationMessage"}]},{"kind":"INTERFACE","name":"IIssue","possibleTypes":[{"name":"Issue"},{"name":"DefaultIssue"}]}]}}

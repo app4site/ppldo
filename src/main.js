@@ -1,13 +1,13 @@
-import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
-import store from './store';
-import './registerServiceWorker';
+import Vue from 'vue'
+import framework7 from './framework7'
+import store from './store'
+import './registerServiceWorker'
+import App from './App.vue'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 new Vue({
-  router,
+  framework7,
   store,
   render: h => h(App),
-}).$mount('#app');
+}).$mount('#app')

@@ -1,25 +1,26 @@
 <template lang="pug">
   #app
-    #nav
-      router-link(to="/") Home
-      |{{" | "}}
-      router-link(to="/about") About
-    router-view
+    f7-view(v-if="authOk" main)
+    f7-login-screen(:opened="!authOk")
+      f7-view
+        login-page
 </template>
 
-<style lang="stylus">
-#app
-  font-family 'Avenir', Helvetica, Arial, sans-serif
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  text-align center
-  color #2c3e50
+<script>
+import { mapGetters } from 'vuex'
+import LoginPage from './views/LoginPage.vue'
 
-#nav
-  padding 30px
-  a
-    font-weight bold
-    color #2c3e50
-    &.router-link-exact-active
-      color #42b983
+export default {
+  components: {
+    LoginPage,
+  },
+  computed: {
+    ...mapGetters({
+      authOk: 'auth/ok',
+    }),
+  },
+}
+</script>
+
+<style lang="stylus">
 </style>
