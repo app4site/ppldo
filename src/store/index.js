@@ -9,22 +9,29 @@ import messages from './messages'
 
 Vue.use(Vuex)
 
-const apolloPlugin = (createClient, options) => (store) => {
+const apolloPlugin = (createClient, options) => store => {
   store.registerModule('apollo', {
     state: {
-      client: createClient(store, createVuexCache(store, options)),
+      client: null,
       objects: {},
     },
     mutations: {
       apolloSet(state, { obj, property, value }) {
         Vue.set(obj, property, value)
       },
+      apolloClient(state) {
+        state.client = createClient(store, createVuexCache(store, options))
+      },
     },
     actions: {
-      load({ state }, query) {
+      load({ state, commit }, query) {
+        if (!state.client)
+          commit('apolloClient')
         return state.client.query({ query })
       },
-      mutate({ state }, mutation) {
+      mutate({ state, commit }, mutation) {
+        if (!state.client)
+          commit('apolloClient')
         return state.client.mutate({ mutation })
       },
     },

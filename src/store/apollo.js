@@ -6,28 +6,31 @@ import { HttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
-const gqlUrl = 'https://ppldo-graphql-test.herokuapp.com/graphql'
-
-const httpLink = new HttpLink({
-  uri: gqlUrl,
-})
-
-const wsLink = new WebSocketLink({
-  uri: gqlUrl.replace('https', 'wss'),
-  options: {
-    reconnect: true,
-  },
-})
 
 export default (store, cache) => {
+  const gqlUrl = 'https://ppldo-graphql-test.herokuapp.com/graphql'
+
+  const httpLink = new HttpLink({
+    uri: gqlUrl,
+  })
+
   const authLink = setContext((_, { headers }) => {
-    const token = store.getters['auth/token']
     return {
       headers: {
         ...headers,
-        authorization: token,
+        Authorization: store.getters['auth/token'],
       },
     }
+  }).concat(httpLink)
+
+  const wsLink = new WebSocketLink({
+    uri: gqlUrl.replace('https', 'wss'),
+    options: {
+      reconnect: true,
+      connectionParams: {
+        Authorization: store.getters['auth/token'],
+      }
+    },
   })
 
   const link = split(
@@ -36,7 +39,7 @@ export default (store, cache) => {
       return kind === 'OperationDefinition' && operation === 'subscription'
     },
     wsLink,
-    authLink.concat(httpLink),
+    authLink,
   )
 
   return new ApolloClient({
